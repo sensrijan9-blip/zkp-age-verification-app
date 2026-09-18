@@ -1,98 +1,140 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <View style={styles.container}>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <View style={styles.iconContainer}>
+        <Text style={styles.icon}>🔐</Text>
+      </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+      <Text style={styles.title}>AGEVERIFY</Text>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      <Text style={styles.heading}>
+        Prove your age.{'\n'}
+        Keep your identity private.
+      </Text>
+
+      <Text style={styles.description}>
+        Verify that you're 18+ without revealing your date of birth.
+      </Text>
+
+      <Pressable
+        style={styles.button}
+        onPress={() => router.push('/identity')}
+      >
+        <Text style={styles.buttonText}>Get Started</Text>
+        <Text style={styles.arrow}>→</Text>
+      </Pressable>
+
+      <View style={styles.security}>
+        <Text style={styles.securityIcon}>✓</Text>
+        <Text style={styles.securityText}>
+          Privacy-first verification
+        </Text>
+      </View>
+
+      <Text style={styles.zkp}>
+        Powered by Zero-Knowledge Proofs
+      </Text>
+
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#080B14',
+    paddingHorizontal: 28,
     justifyContent: 'center',
-    flexDirection: 'row',
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
+
+  iconContainer: {
+    width: 72,
+    height: 72,
+    borderRadius: 22,
+    backgroundColor: '#151B2E',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    alignItems: 'center',
+    marginBottom: 28,
   },
+
+  icon: {
+    fontSize: 36,
+  },
+
   title: {
-    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 3,
+    color: '#6EA8FE',
+    marginBottom: 24,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  heading: {
+    fontSize: 38,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    lineHeight: 46,
+    marginBottom: 18,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  description: {
+    fontSize: 17,
+    color: '#9AA4B8',
+    lineHeight: 26,
+    marginBottom: 42,
+  },
+
+  button: {
+    height: 58,
+    borderRadius: 18,
+    backgroundColor: '#3D7EFF',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+
+  arrow: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    marginLeft: 12,
+  },
+
+  security: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 28,
+  },
+
+  securityIcon: {
+    color: '#5FE0A0',
+    fontSize: 16,
+    fontWeight: '700',
+    marginRight: 8,
+  },
+
+  securityText: {
+    color: '#8D97AA',
+    fontSize: 14,
+  },
+
+  zkp: {
+    position: 'absolute',
+    bottom: 35,
+    alignSelf: 'center',
+    color: '#555E70',
+    fontSize: 12,
   },
 });
+
